@@ -49,40 +49,40 @@ namespace NumbersConverter
             switch (desiredType)
             {
                 case "ASCII":
-                    output = ConvertToASCII();
+                    output = ConvertToASCII(input);
                     break;
 
                 case "Binary":
-                    output = ConvertToBinary();
+                    output = ConvertToBinary(input);
                     break;
 
                 case "Hexadecimal":
-                    output = ConvertToHexadecimal();
+                    output = ConvertToHexadecimal(input);
                     break;
 
                 case "Base64":
-                    output = ConvertToBase64();
+                    output = ConvertToBase64(input);
                     break;
             }
             return output;
         }
 
-        private int ConvertToASCII()
+        private int ConvertToASCII(int input)
         {
             throw new NotImplementedException();
         }
 
-        private int ConvertToBinary()
+        private int ConvertToBinary(int input)
         {
             throw new NotImplementedException();
         }
 
-        private int ConvertToHexadecimal()
+        private int ConvertToHexadecimal(int input)
         {
             throw new NotImplementedException();
         }
 
-        private int ConvertToBase64()
+        private int ConvertToBase64(int input)
         {
             throw new NotImplementedException();
         }
