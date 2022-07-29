@@ -37,55 +37,9 @@ namespace NumbersConverter
         {
             if (e.Key == Key.Return && int.TryParse(TextBoxInput.Text, out var input))
             {
-                int output = Convert(input, ComboBoxType.Text);
-                TextBoxOutput.Text = output.ToString();
+                string output = Converter.Convert(input, ComboBoxType.Text);
+                TextBoxOutput.Text = output;
             }
         }
-
-
-        private int Convert(int input, string desiredType)
-        {
-            var output = 0;
-            switch (desiredType)
-            {
-                case "ASCII":
-                    output = ConvertToASCII(input);
-                    break;
-
-                case "Binary":
-                    output = ConvertToBinary(input);
-                    break;
-
-                case "Hexadecimal":
-                    output = ConvertToHexadecimal(input);
-                    break;
-
-                case "Base64":
-                    output = ConvertToBase64(input);
-                    break;
-            }
-            return output;
-        }
-
-        private int ConvertToASCII(int input)
-        {
-            throw new NotImplementedException();
-        }
-
-        private int ConvertToBinary(int input)
-        {
-            throw new NotImplementedException();
-        }
-
-        private int ConvertToHexadecimal(int input)
-        {
-            throw new NotImplementedException();
-        }
-
-        private int ConvertToBase64(int input)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

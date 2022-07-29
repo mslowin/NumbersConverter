@@ -11,9 +11,9 @@
         Background="DarkSlateBlue" MinHeight="230" MaxHeight="230" MinWidth="500" MaxWidth="500">
     <Grid>
         <StackPanel FocusManager.FocusedElement="{Binding ElementName=TextBoxInput}">
-            <TextBox x:Name="TextBoxInput" HorizontalAlignment="Left" Margin="186,52,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="258" Height="24" VerticalContentAlignment="Center" />
+            <TextBox x:Name="TextBoxInput" HorizontalAlignment="Left" Margin="186,52,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="258" Height="24" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
         </StackPanel>
-        <TextBox x:Name="TextBoxOutput" HorizontalAlignment="Left" Margin="186,131,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="258" Height="24" IsReadOnly="True" VerticalContentAlignment="Center" />
+        <TextBox x:Name="TextBoxOutput" HorizontalAlignment="Left" Margin="186,131,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="258" Height="24" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" />
         <ComboBox x:Name="ComboBoxType" HorizontalAlignment="Left" Margin="19,131,0,0" VerticalAlignment="Top" Width="143" Height="24" SelectedIndex="0" HorizontalContentAlignment="Center">
             <ComboBoxItem Content="ASCII"/>
             <ComboBoxItem Content="Binary"/>
