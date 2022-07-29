@@ -8,7 +8,19 @@ namespace NumbersConverter
 {
     internal static class Converter
     {
-        private static readonly List<string> _alphabet = new List<string>() { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "+", "/" };
+        private static readonly List<string> _alphabet = new List<string>() { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", 
+                                                                              "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", 
+                                                                              "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", 
+                                                                              "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", 
+                                                                              "4", "5", "6", "7", "8", "9", "+", "/" };
+
+        private static readonly List<string> _asciiAlphabet = new List<string>() { " ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", 
+                                                                                   ".", "/", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":", ";", 
+                                                                                   "<", "=", ">", "?", "@", "A", "B", "C", "D", "E", "F", "G", "H", "I", 
+                                                                                   "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", 
+                                                                                   "X", "Y", "Z", "[", "\\", "]", "^", "_", "`", "a", "b", "c", "d", "e", 
+                                                                                   "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", 
+                                                                                   "t", "u", "v", "w", "x", "y", "z", "{", "|", "}", "~"};
 
         public static string Convert(int input, string desiredType)
         {
@@ -36,7 +48,30 @@ namespace NumbersConverter
 
         public static string ConvertToASCII(int input)
         {
-            throw new NotImplementedException();
+            var inputDec = DecConvert(input.ToString());
+            var inputBin = inputDec.Select(c => { c = ConvertToBinary(c); return c; }).ToList();  // list of characters in binary form
+            inputDec = inputBin.Select(c => { c = BinaryToDec(c); return c; }).ToList();  // converting each sample to its Decimal values
+            string output = DecToASCII(inputDec);  // converting decimal values to ASCII
+
+            return output;
+        }
+
+        private static string DecToASCII(List<string> inputDec)
+        {
+            bool run = true;
+            string outputBase64 = "";
+            int counter = 0;
+            while (run)
+            {
+                var decNumber = int.Parse(inputDec[counter]);
+                outputBase64 += _asciiAlphabet[decNumber];
+                if (counter == inputDec.Count - 1)
+                {
+                    run = false;
+                }
+                counter++;
+            }
+            return outputBase64;
         }
 
         public static string ConvertToBinary(string input)
