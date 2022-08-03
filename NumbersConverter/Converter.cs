@@ -201,31 +201,16 @@ namespace NumbersConverter
 
         private static string HexConvert(string hexTmp)
         {
-            if(hexTmp == "10")
+            return hexTmp = hexTmp switch
             {
-                hexTmp = "A";
-            }
-            if (hexTmp == "11")
-            {
-                hexTmp = "B";
-            }
-            if (hexTmp == "12")
-            {
-                hexTmp = "C";
-            }
-            if (hexTmp == "13")
-            {
-                hexTmp = "D";
-            }
-            if (hexTmp == "14")
-            {
-                hexTmp = "E";
-            }
-            if (hexTmp == "15")
-            {
-                hexTmp = "F";
-            }
-            return hexTmp;
+                "10" => "A",
+                "11" => "B",
+                "12" => "C",
+                "13" => "D",
+                "14" => "E",
+                "15" => "F",
+				_ => hexTmp,
+            };
         }
     }
 }
