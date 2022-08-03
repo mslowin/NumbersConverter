@@ -35,9 +35,9 @@ namespace NumbersConverter
 
         private void HandleEnter(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return && int.TryParse(TextBoxInput.Text, out var input))
+            if (e.Key == Key.Return)
             {
-                string output = Converter.Convert(input, ComboBoxType.Text);
+                string output = Converter.Convert(TextBoxInput.Text, ComboBoxType.Text);
                 TextBoxOutput.Text = output;
             }
         }

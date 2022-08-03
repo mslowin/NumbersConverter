@@ -28,13 +28,13 @@ namespace NumbersConverter
 		/// <param name="input">Input value to be converted.</param>
 		/// <param name="desiredType">Data type to convert to.</param>
 		/// <returns>Converted value.</returns>
-		public static string Convert(int input, string desiredType)
+		public static string Convert(string input, string desiredType)
 		{
 			var output = "";
 			switch (desiredType)
 			{
 				case "ASCII":
-					output = ConvertToASCII(input);
+					output = ConvertToASCII(input.ToString());
 					break;
 
 				case "Binary":
@@ -42,11 +42,11 @@ namespace NumbersConverter
 					break;
 
 				case "Hexadecimal":
-					output = ConvertToHexadecimal(input);
+					output = ConvertToHexadecimal(input.ToString());
 					break;
 
 				case "Base64":
-					output = ConvertToBase64(input);
+					output = ConvertToBase64(input.ToString());
 					break;
 			}
 			return output;
@@ -57,7 +57,7 @@ namespace NumbersConverter
 		/// </summary>
 		/// <param name="input">Input string.</param>
 		/// <returns>ASCII value.</returns>
-		public static string ConvertToASCII(int input)
+		public static string ConvertToASCII(string input)
 		{
 			var inputDec = DecConvert(input.ToString());
 			var inputBin = inputDec.Select(c => { c = ConvertToBinary(c); return c; }).ToList();  // list of characters in binary form
@@ -114,9 +114,15 @@ namespace NumbersConverter
 				}
 			}
 			var output = String.Join("", binNum.ToArray());
+
 			char[] tmpArray = output.ToCharArray();
 			Array.Reverse(tmpArray);
 			output = new string(tmpArray);
+
+			while (output.Length % 8 != 0)
+			{
+				output = "0" + output;
+			}
 
 			return output;
 		}
@@ -126,10 +132,10 @@ namespace NumbersConverter
 		/// </summary>
 		/// <param name="input">Input string.</param>
 		/// <returns>Hexadecimal value.</returns>
-		public static string ConvertToHexadecimal(int input)
+		public static string ConvertToHexadecimal(string input)
 		{
 			var hexNum = new List<string>();
-			var tmp = input;
+			var tmp = int.Parse(input);
 			int hexTmp;
 
 			while (tmp >= 1)
@@ -151,24 +157,44 @@ namespace NumbersConverter
 		/// </summary>
 		/// <param name="input">Input string.</param>
 		/// <returns>Base64 value.</returns>
-		public static string ConvertToBase64(int input)
+		public static string ConvertToBase64(string input)
 		{
 			var inputDec = DecConvert(input.ToString());  // getting a list of characters from input
 			var inputBin = inputDec.Select(c => { c = ConvertToBinary(c); return c; }).ToList();  // list of characters in binary form
 			string combinedBinaries = String.Join("", inputBin.ToArray());  // string with all binar values
+			combinedBinaries = AddZerosIfNecessary(combinedBinaries);
 			List<string> bit6 = SplitTo6Bit(combinedBinaries);  // spliting combied binaries to 6 bit long samples
 			inputDec = bit6.Select(c => { c = BinaryToDec(c); return c; }).ToList();  // converting each sample to its Decimal values
 			string output = DecToBase64(inputDec);  // converting decimal values to base64
+			
+			while(output.Length % 4 != 0)  // output must be divisible by 4
+            {
+				output += "=";
+            }
 
 			return output;
 		}
 
 		/// <summary>
-		/// Converts decimal value to base64 value.
+		/// Adds zeros at the end of a string till it is divisible by 6.
 		/// </summary>
-		/// <param name="inputDec">Decimal value.</param>
-		/// <returns>Base64 value.</returns>
-		private static string DecToBase64(List<string> inputDec)
+		/// <param name="combinedBinaries">Input string.</param>
+		/// <returns>String with added zeros at the end.</returns>
+        private static string AddZerosIfNecessary(string combinedBinaries)
+        {
+			while(combinedBinaries.Length % 6 != 0)
+            {
+				combinedBinaries += "0";
+            }
+			return combinedBinaries;
+		}
+
+        /// <summary>
+        /// Converts decimal value to base64 value.
+        /// </summary>
+        /// <param name="inputDec">Decimal value.</param>
+        /// <returns>Base64 value.</returns>
+        private static string DecToBase64(List<string> inputDec)
 		{
 			bool run = true;
 			string outputBase64 = "";
@@ -234,10 +260,10 @@ namespace NumbersConverter
 		}
 
 		/// <summary>
-		/// Creates a list of characters from a string.
+		/// Creates a list of INTIGER characters from a string.
 		/// </summary>
 		/// <param name="input">string which will be converted to a list.</param>
-		/// <returns>List of characters.</returns>
+		/// <returns>List of INTIGER characters.</returns>
 		private static List<string> DecConvert(string input)
 		{
 			char[] inputDec = input.ToString().ToCharArray();
