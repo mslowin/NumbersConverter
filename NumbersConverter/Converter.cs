@@ -8,20 +8,26 @@ namespace NumbersConverter
 {
 	internal static class Converter
 	{
-		private static readonly List<string> _alphabet = new List<string>() { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", 
-																			  "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", 
-																			  "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", 
-																			  "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3", 
+		private static readonly List<string> _alphabet = new List<string>() { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
+																			  "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b",
+																			  "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
+																			  "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "0", "1", "2", "3",
 																			  "4", "5", "6", "7", "8", "9", "+", "/" };
 
-		private static readonly List<string> _asciiAlphabet = new List<string>() { " ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", 
-																				   ".", "/", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":", ";", 
-																				   "<", "=", ">", "?", "@", "A", "B", "C", "D", "E", "F", "G", "H", "I", 
-																				   "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", 
-																				   "X", "Y", "Z", "[", "\\", "]", "^", "_", "`", "a", "b", "c", "d", "e", 
-																				   "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", 
+		private static readonly List<string> _asciiAlphabet = new List<string>() { " ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-",
+																				   ".", "/", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":", ";",
+																				   "<", "=", ">", "?", "@", "A", "B", "C", "D", "E", "F", "G", "H", "I",
+																				   "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W",
+																				   "X", "Y", "Z", "[", "\\", "]", "^", "_", "`", "a", "b", "c", "d", "e",
+																				   "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s",
 																				   "t", "u", "v", "w", "x", "y", "z", "{", "|", "}", "~"};
 
+		/// <summary>
+		/// Performs conversion of the input depending on the selected conversion method
+		/// </summary>
+		/// <param name="input">Input value to be converted.</param>
+		/// <param name="desiredType">Data type to convert to.</param>
+		/// <returns>Converted value.</returns>
 		public static string Convert(int input, string desiredType)
 		{
 			var output = "";
@@ -46,6 +52,11 @@ namespace NumbersConverter
 			return output;
 		}
 
+		/// <summary>
+		/// Converts input string into ASCII form
+		/// </summary>
+		/// <param name="input">Input string.</param>
+		/// <returns>ASCII value.</returns>
 		public static string ConvertToASCII(int input)
 		{
 			var inputDec = DecConvert(input.ToString());
@@ -56,6 +67,11 @@ namespace NumbersConverter
 			return output;
 		}
 
+		/// <summary>
+		/// Converts decimal value into ASCII.
+		/// </summary>
+		/// <param name="inputDec">Decimal value.</param>
+		/// <returns>ASCII value.</returns>
 		private static string DecToASCII(List<string> inputDec)
 		{
 			bool run = true;
@@ -74,6 +90,11 @@ namespace NumbersConverter
 			return outputBase64;
 		}
 
+		/// <summary>
+		/// Converts input string into binary form.
+		/// </summary>
+		/// <param name="input">Input string.</param>
+		/// <returns>Binary value.</returns>
 		public static string ConvertToBinary(string input)
 		{
 			var binNum = new List<int>();
@@ -100,6 +121,11 @@ namespace NumbersConverter
 			return output;
 		}
 
+		/// <summary>
+		/// Converts input string into hexadecimal form.
+		/// </summary>
+		/// <param name="input">Input string.</param>
+		/// <returns>Hexadecimal value.</returns>
 		public static string ConvertToHexadecimal(int input)
 		{
 			var hexNum = new List<string>();
@@ -120,9 +146,14 @@ namespace NumbersConverter
 			return output;
 		}
 
+		/// <summary>
+		/// Converts input string into base64 value.
+		/// </summary>
+		/// <param name="input">Input string.</param>
+		/// <returns>Base64 value.</returns>
 		public static string ConvertToBase64(int input)
 		{
-			var inputDec = DecConvert(input.ToString());
+			var inputDec = DecConvert(input.ToString());  // getting a list of characters from input
 			var inputBin = inputDec.Select(c => { c = ConvertToBinary(c); return c; }).ToList();  // list of characters in binary form
 			string combinedBinaries = String.Join("", inputBin.ToArray());  // string with all binar values
 			List<string> bit6 = SplitTo6Bit(combinedBinaries);  // spliting combied binaries to 6 bit long samples
@@ -132,16 +163,21 @@ namespace NumbersConverter
 			return output;
 		}
 
+		/// <summary>
+		/// Converts decimal value to base64 value.
+		/// </summary>
+		/// <param name="inputDec">Decimal value.</param>
+		/// <returns>Base64 value.</returns>
 		private static string DecToBase64(List<string> inputDec)
 		{
 			bool run = true;
 			string outputBase64 = "";
 			int counter = 0;
-			while(run)
+			while (run)
 			{
 				var decNumber = int.Parse(inputDec[counter]);
 				outputBase64 += _alphabet[decNumber];
-				if(counter == inputDec.Count - 1)
+				if (counter == inputDec.Count - 1)
 				{
 					run = false;
 				}
@@ -150,6 +186,11 @@ namespace NumbersConverter
 			return outputBase64;
 		}
 
+		/// <summary>
+		/// Converts binary value to decimal value.
+		/// </summary>
+		/// <param name="input">Binary string.</param>
+		/// <returns>Decimal string.</returns>
 		private static string BinaryToDec(string input)
 		{
 			char[] array = input.ToCharArray();
@@ -169,6 +210,11 @@ namespace NumbersConverter
 			return sum.ToString();
 		}
 
+		/// <summary>
+		/// Splits string into 6 character long samples divided with a space.
+		/// </summary>
+		/// <param name="combinedBinaries">long string (characters count should be divisible by 6)</param>
+		/// <returns>Sampled string.</returns>
 		private static List<string> SplitTo6Bit(string combinedBinaries)
 		{
 			List<string> output = new List<string>();
@@ -187,6 +233,11 @@ namespace NumbersConverter
 			return output;
 		}
 
+		/// <summary>
+		/// Creates a list of characters from a string.
+		/// </summary>
+		/// <param name="input">string which will be converted to a list.</param>
+		/// <returns>List of characters.</returns>
 		private static List<string> DecConvert(string input)
 		{
 			char[] inputDec = input.ToString().ToCharArray();
@@ -199,9 +250,14 @@ namespace NumbersConverter
 			return outputDec;
 		}
 
+		/// <summary>
+		/// Converts decimal value to hexadecimal value.
+		/// </summary>
+		/// <param name="hexTmp">String to be converted.</param>
+		/// <returns>Converted value.</returns>
 		private static string HexConvert(string hexTmp)
 		{
-			return hexTmp = hexTmp switch
+			return _ = hexTmp switch
 			{
 				"10" => "A",
 				"11" => "B",
