@@ -99,75 +99,55 @@ namespace NumbersConverter
             {
                 var outputList = new List<string>();
                 var inputInDecimals = DecConvert(input);
-                string output;
 
                 foreach (var decimalItem in inputInDecimals)
                 {
-                    var binNum = new List<int>();
-                    var tmp = int.Parse(decimalItem);         //<-----
-
-                    while (true)
-                    {
-                        if (tmp < 1)
-                        {
-                            binNum.Add(tmp % 2);
-                            break;
-                        }
-                        else
-                        {
-                            binNum.Add(tmp % 2);
-                            tmp /= 2;
-                        }
-                    }
-                    output = String.Join("", binNum.ToArray());
-
-                    char[] tmpArray = output.ToCharArray();
-                    Array.Reverse(tmpArray);
-                    output = new string(tmpArray);
-
-                    while (output.Length % 8 != 0)
-                    {
-                        output = "0" + output;
-                    }
-
-                    outputList.Add(output);
+                    outputList.Add(SingleItemToBinary(decimalItem));
                 }
 
-                output = String.Join(" ", outputList.ToArray());
-
-                return output;
+                return String.Join(" ", outputList.ToArray());
             }
             else
             {
-                var binNum = new List<int>();
-                var tmp = int.Parse(input);         //<-----
-
-                while (true)
-                {
-                    if (tmp < 1)
-                    {
-                        binNum.Add(tmp % 2);
-                        break;
-                    }
-                    else
-                    {
-                        binNum.Add(tmp % 2);
-                        tmp /= 2;
-                    }
-                }
-                var output = String.Join("", binNum.ToArray());
-
-                char[] tmpArray = output.ToCharArray();
-                Array.Reverse(tmpArray);
-                output = new string(tmpArray);
-
-                while (output.Length % 8 != 0)
-                {
-                    output = "0" + output;
-                }
-
-                return output;
+                return SingleItemToBinary(input);
             }
+        }
+
+        /// <summary>
+        /// Converts single item (peace of text or a number) to its binary counterpart.
+        /// </summary>
+        /// <param name="input">Item to convert.</param>
+        /// <returns>Converted item.</returns>
+        private static string SingleItemToBinary(string input)
+        {
+            string output;
+            var binNum = new List<int>();
+            var tmp = int.Parse(input);
+
+            while (true)
+            {
+                if (tmp < 1)
+                {
+                    binNum.Add(tmp % 2);
+                    break;
+                }
+                else
+                {
+                    binNum.Add(tmp % 2);
+                    tmp /= 2;
+                }
+            }
+            output = String.Join("", binNum.ToArray());
+            char[] tmpArray = output.ToCharArray();
+            Array.Reverse(tmpArray);
+            output = new string(tmpArray);
+
+            while (output.Length % 8 != 0)
+            {
+                output = "0" + output;
+            }
+
+            return output;
         }
 
         /// <summary>
@@ -181,52 +161,43 @@ namespace NumbersConverter
             {
                 var outputList = new List<string>();
                 var inputInDecimals = DecConvert(input);
-                string output;
 
                 foreach (var decimalItem in inputInDecimals)
                 {
-                    var hexNum = new List<string>();
-                    var tmp = int.Parse(decimalItem);
-                    int hexTmp;
-
-                    while (tmp >= 1)
-                    {
-                        hexTmp = tmp % 16;
-                        hexNum.Add(HexConvert(hexTmp.ToString()));
-                        tmp /= 16;
-                    }
-                    output = String.Join("", hexNum.ToArray());
-
-                    char[] tmpArray = output.ToCharArray();
-                    Array.Reverse(tmpArray);
-                    output = new string(tmpArray);
-
-                    outputList.Add(output);
+                    outputList.Add(SingleItemToHex(decimalItem));
                 }
-
-                output = String.Join(" ", outputList.ToArray());
-
-                return output;
+                return String.Join(" ", outputList.ToArray());
             }
             else
             {
-                var hexNum = new List<string>();
-                var tmp = int.Parse(input);
-                int hexTmp;
-
-                while (tmp >= 1)
-                {
-                    hexTmp = tmp % 16;
-                    hexNum.Add(HexConvert(hexTmp.ToString()));
-                    tmp /= 16;
-                }
-                var output = String.Join("", hexNum.ToArray());
-                char[] tmpArray = output.ToCharArray();
-                Array.Reverse(tmpArray);
-                output = new string(tmpArray);
-
-                return output;
+                return SingleItemToHex(input);
             }
+        }
+
+        /// <summary>
+        /// Converts single item (peace of text or a number) to its hex counterpart.
+        /// </summary>
+        /// <param name="input">Item to convert.</param>
+        /// <returns>Converted item.</returns>
+        private static string SingleItemToHex(string input)
+        {
+            string output;
+            var hexNum = new List<string>();
+            var tmp = int.Parse(input);
+            int hexTmp;
+
+            while (tmp >= 1)
+            {
+                hexTmp = tmp % 16;
+                hexNum.Add(HexConvert(hexTmp.ToString()));
+                tmp /= 16;
+            }
+            output = String.Join("", hexNum.ToArray());
+            char[] tmpArray = output.ToCharArray();
+            Array.Reverse(tmpArray);
+            output = new string(tmpArray);
+
+            return output;
         }
 
         /// <summary>
