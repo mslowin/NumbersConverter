@@ -31,9 +31,9 @@ namespace NumbersConverter
             var output = "";
             switch (desiredType)
             {
-                case "ASCII":
-                    output = ConvertToASCII(input.ToString());
-                    break;
+                //case "ASCII":
+                //    output = ConvertToASCII(input.ToString());
+                //    break;
 
                 case "Binary":
                     output = ConvertToBinary(input.ToString());
@@ -207,6 +207,7 @@ namespace NumbersConverter
         /// <returns>Base64 value.</returns>
         public static string ConvertToBase64(string input)
         {
+            if (input.Length == 0) { return ""; }  // if input is empty there is nothing to convert
             var inputDec = DecConvert(input.ToString());  // getting a list of characters (intigers) from input
             var inputBin = inputDec.Select(c => { c = ConvertToBinary(c); return c; }).ToList();  // list of characters in binary form
             string combinedBinaries = String.Join("", inputBin.ToArray());  // string with all binar values
