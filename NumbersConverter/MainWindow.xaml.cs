@@ -35,10 +35,16 @@ namespace NumbersConverter
 
         private void HandleEnter(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            if (e.Key == Key.Return && TextBoxInput.IsKeyboardFocused)
             {
-                string output = Converter.Convert(TextBoxInput.Text, ComboBoxType.Text);
+                string output = Converter.ConvertFromASCII(TextBoxInput.Text, ComboBoxType.Text);
                 TextBoxOutput.Text = output;
+            }
+
+            if (e.Key == Key.Return && TextBoxOutput.IsKeyboardFocused)
+            {
+                string output = Converter.ConvertToASCII(TextBoxInput.Text, ComboBoxType.Text);
+                TextBoxInput.Text = output;
             }
         }
 

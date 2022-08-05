@@ -26,15 +26,11 @@ namespace NumbersConverter
         /// <param name="input">Input value to be converted.</param>
         /// <param name="desiredType">Data type to convert to.</param>
         /// <returns>Converted value.</returns>
-        public static string Convert(string input, string desiredType)
+        public static string ConvertFromASCII(string input, string desiredType)
         {
             var output = "";
             switch (desiredType)
             {
-                //case "ASCII":
-                //    output = ConvertToASCII(input.ToString());
-                //    break;
-
                 case "Binary":
                     output = ConvertToBinary(input.ToString());
                     break;
@@ -48,6 +44,41 @@ namespace NumbersConverter
                     break;
             }
             return output;
+        }
+
+        internal static string ConvertToASCII(string input, string desiredType)
+        {
+            var output = "";
+            switch (desiredType)
+            {
+                case "Binary":
+                    output = ConvertFromBinary(input.ToString());
+                    break;
+
+                case "Hexadecimal":
+                    output = ConvertFromHexadecimal(input.ToString());
+                    break;
+
+                case "Base64":
+                    output = ConvertFromBase64(input.ToString());
+                    break;
+            }
+            return output;
+        }
+
+        private static string ConvertFromBase64(string v)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string ConvertFromHexadecimal(string v)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static string ConvertFromBinary(string v)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
