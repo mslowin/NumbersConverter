@@ -147,6 +147,9 @@ namespace NumbersConverter
                 }
                 outputList.Add(output.ToString());
             }
+
+            //string outputASCII = DecToASCII(String.Join(" ", outputList.ToArray()));
+
             return String.Join(" ", outputList.ToArray());
         }
 
@@ -159,7 +162,7 @@ namespace NumbersConverter
         {
             foreach (var character in input)
             {
-                if (!Regex.IsMatch(character.ToString(), @"[0-9A-F]+"))
+                if (!Regex.IsMatch(character.ToString(), @"[0-9A-F ]+"))
                 {
                     return false;
                 }
