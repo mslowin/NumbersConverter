@@ -44,32 +44,32 @@ namespace NumbersConverter
 
         private void TextBoxInput_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if(TextBoxInput.Text != "")
-            {
-                TextBoxOutput.Text = "";
-                TextBoxOutput.IsReadOnly = true;
-                TextBoxOutput.Background = Brushes.Gray;
-            }
-            if(TextBoxInput.Text == "")
-            {
-                TextBoxOutput.IsReadOnly = false;
-                TextBoxOutput.Background = Brushes.White;
-            }
+            //if(TextBoxInput.Text != "")
+            //{
+            //    TextBoxOutput.Text = "";
+            //    TextBoxOutput.IsReadOnly = true;
+            //    TextBoxOutput.Background = Brushes.Gray;
+            //}
+            //if(TextBoxInput.Text == "")
+            //{
+            //    TextBoxOutput.IsReadOnly = false;
+            //    TextBoxOutput.Background = Brushes.White;
+            //}
         }
 
         private void TextBoxOutput_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (TextBoxOutput.Text != "")
-            {
-                TextBoxInput.Text = "";
-                TextBoxInput.IsReadOnly = true;
-                TextBoxInput.Background = Brushes.LightGray;
-            }
-            if (TextBoxOutput.Text == "")
-            {
-                TextBoxInput.IsReadOnly = false;
-                TextBoxInput.Background = Brushes.White;
-            }
+            //if (TextBoxOutput.Text != "")
+            //{
+            //    TextBoxInput.Text = "";
+            //    TextBoxInput.IsReadOnly = true;
+            //    TextBoxInput.Background = Brushes.Gray;
+            //}
+            //if (TextBoxOutput.Text == "")
+            //{
+            //    TextBoxInput.IsReadOnly = false;
+            //    TextBoxInput.Background = Brushes.White;
+            //}
         }
     }
 }

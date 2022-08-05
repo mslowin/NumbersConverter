@@ -177,22 +177,56 @@ namespace NumbersConverter
         /// <returns>Hexadecimal value.</returns>
         public static string ConvertToHexadecimal(string input)
         {
-            var hexNum = new List<string>();
-            var tmp = int.Parse(input);
-            int hexTmp;
-
-            while (tmp >= 1)
+            if (!int.TryParse(input, out var inputInt))  // if input is a text string
             {
-                hexTmp = tmp % 16;
-                hexNum.Add(HexConvert(hexTmp.ToString()));
-                tmp /= 16;
-            }
-            var output = String.Join("", hexNum.ToArray());
-            char[] tmpArray = output.ToCharArray();
-            Array.Reverse(tmpArray);
-            output = new string(tmpArray);
+                var outputList = new List<string>();
+                var inputInDecimals = DecConvert(input);
+                string output;
 
-            return output;
+                foreach (var decimalItem in inputInDecimals)
+                {
+                    var hexNum = new List<string>();
+                    var tmp = int.Parse(decimalItem);
+                    int hexTmp;
+
+                    while (tmp >= 1)
+                    {
+                        hexTmp = tmp % 16;
+                        hexNum.Add(HexConvert(hexTmp.ToString()));
+                        tmp /= 16;
+                    }
+                    output = String.Join("", hexNum.ToArray());
+
+                    char[] tmpArray = output.ToCharArray();
+                    Array.Reverse(tmpArray);
+                    output = new string(tmpArray);
+
+                    outputList.Add(output);
+                }
+
+                output = String.Join(" ", outputList.ToArray());
+
+                return output;
+            }
+            else
+            {
+                var hexNum = new List<string>();
+                var tmp = int.Parse(input);
+                int hexTmp;
+
+                while (tmp >= 1)
+                {
+                    hexTmp = tmp % 16;
+                    hexNum.Add(HexConvert(hexTmp.ToString()));
+                    tmp /= 16;
+                }
+                var output = String.Join("", hexNum.ToArray());
+                char[] tmpArray = output.ToCharArray();
+                Array.Reverse(tmpArray);
+                output = new string(tmpArray);
+
+                return output;
+            }
         }
 
         /// <summary>
