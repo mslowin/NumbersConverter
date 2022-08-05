@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace NumbersConverter
 {
@@ -69,12 +70,13 @@ namespace NumbersConverter
         /// <summary>
         /// Converts binary values to decimals
         /// </summary>
-        /// <param name="input">Binary values to be converted (string with one or 
+        /// <param name="input">Binary values to be converted (string with one or
         /// more binary numbers with spaces between them)</param>
         /// <returns>Decimal representation of those values</returns>
         private static string ConvertFromBinary(string input)
         {
             if (!IsBinary(input)) { return "Number isn't binary"; }
+
             var binNumbers = input.Split(' ');
             double output;
             var outputList = new List<string>();
@@ -90,10 +92,8 @@ namespace NumbersConverter
                 {
                     output += int.Parse(input[i].ToString()) * power;
                 }
-
                 outputList.Add(output.ToString());
             }
-
             return String.Join(" ", outputList.ToArray());
         }
 
@@ -111,9 +111,60 @@ namespace NumbersConverter
             return true;
         }
 
+        /// <summary>
+        /// Converts hexadecimal values to decimals
+        /// </summary>
+        /// <param name="input">Hexadecimal values to be converted (string with one or
+        /// more hex numbers with spaces between them)</param>
+        /// <returns>Decimal representation of those values</returns>
         private static string ConvertFromHexadecimal(string input)
         {
-            throw new NotImplementedException();
+            if (!IsHexadecimal(input)) { return "Number isn't hexadecimal"; }
+
+            var HexNumbers = input.Split(' ');
+            double output;
+            var outputList = new List<string>();
+
+            foreach (var HexNumber in HexNumbers)
+            {
+                output = 0;
+                char[] tmpArray = HexNumber.ToCharArray();
+                Array.Reverse(tmpArray);
+                input = new string(tmpArray);
+
+                for (int i = 0; i < input.Length; i++)
+                {
+                    var character = 0;
+                    if (!int.TryParse(input[i].ToString(), out var intCharacter))
+                    {
+                        character = int.Parse(HexToDecHelper(input[i].ToString()));  // character = 12 || 13 itd.
+                    }
+                    else
+                    {
+                        character = intCharacter;
+                    }
+                    output += character * Math.Pow(16, i);
+                }
+                outputList.Add(output.ToString());
+            }
+            return String.Join(" ", outputList.ToArray());
+        }
+
+        /// <summary>
+        /// Checks if a number is hexadecimal.
+        /// </summary>
+        /// <param name="input">Number to be checked.</param>
+        /// <returns>true if is hexadecimal, otherwise false.</returns>
+        private static bool IsHexadecimal(string input)
+        {
+            foreach (var character in input)
+            {
+                if (!Regex.IsMatch(character.ToString(), @"[0-9A-F]+"))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private static string ConvertFromBase64(string input)
@@ -260,7 +311,7 @@ namespace NumbersConverter
             while (tmp >= 1)
             {
                 hexTmp = tmp % 16;
-                hexNum.Add(HexConvert(hexTmp.ToString()));
+                hexNum.Add(DecToHexHelper(hexTmp.ToString()));
                 tmp /= 16;
             }
             output = String.Join("", hexNum.ToArray());
@@ -400,7 +451,7 @@ namespace NumbersConverter
         /// </summary>
         /// <param name="hexTmp">String to be converted.</param>
         /// <returns>Converted value.</returns>
-        private static string HexConvert(string hexTmp)
+        private static string DecToHexHelper(string hexTmp)
         {
             return _ = hexTmp switch
             {
@@ -411,6 +462,25 @@ namespace NumbersConverter
                 "14" => "E",
                 "15" => "F",
                 _ => hexTmp,
+            };
+        }
+
+        /// <summary>
+        /// Converts hexadecimal value to decimal value.
+        /// </summary>
+        /// <param name="decTmp">String to be converted.</param>
+        /// <returns>Converted value.</returns>
+        private static string HexToDecHelper(string decTmp)
+        {
+            return _ = decTmp switch
+            {
+                "A" => "10",
+                "B" => "11",
+                "C" => "12",
+                "D" => "13",
+                "E" => "14",
+                "F" => "15",
+                _ => decTmp,
             };
         }
     }
