@@ -167,48 +167,148 @@ namespace NumbersConverter
             return true;
         }
 
+        /// <summary>
+        /// Converts input string from base64 to ASCII.
+        /// </summary>
+        /// <param name="input">input string (e.g. QXR0YWNrIGF0IGRhd24h).</param>
+        /// <returns>ASCII representation of the base64 input.</returns>
         private static string ConvertFromBase64(string input)
         {
-            throw new NotImplementedException();
+            string decNumbers = Base64ToDec(input.ToList());  // Converting base64 values to decimal values
+            string[] bit6Numbers = DecToBit6(decNumbers);  // Converting decimal values to 6 bit long binary values
+            string[] bit8Numbers = Bit6ToBit8(bit6Numbers);  // Putting 6bits together and creating 8bits out of them
+            string DecNumbers = ConvertFromBinary(String.Join(" ", bit8Numbers.ToArray()));  // Converting 8bits numbers to decimal values
+            string outputASCII = DecToASCII(DecNumbers);  // Converting decimals to ASCII
+
+            return outputASCII;
         }
 
         /// <summary>
-        /// Converts input string into ASCII form
+        /// Converts decimal values (string with spaces between values) to ASCII.
         /// </summary>
-        /// <param name="input">Input string.</param>
-        /// <returns>ASCII value.</returns>
-        public static string ConvertToASCII(string input)
+        /// <param name="input">input string.</param>
+        /// <returns>ASCII representation of the input string.</returns>
+        private static string DecToASCII(string input)
         {
-            var inputDec = DecConvert(input.ToString());
-            var inputBin = inputDec.Select(c => { c = ConvertToBinary(c); return c; }).ToList();  // list of characters in binary form
-            inputDec = inputBin.Select(c => { c = BinaryToDec(c); return c; }).ToList();  // converting each sample to its Decimal values
-            string output = DecToASCII(inputDec);  // converting decimal values to ASCII
+            var decNumbers = input.Split(' ');
+            string outputASCII = "";
 
-            return output;
+            for (int i = 0; i < decNumbers.Length; i++)
+            {
+                var decNumber = decNumbers[i];
+                outputASCII += _asciiAlphabet[int.Parse(decNumber) - 32];  // 32 because my alphabet doesn't start from the beginning of ASCII
+            }
+
+            return outputASCII;
         }
 
         /// <summary>
-        /// Converts decimal value into ASCII.
+        /// Converts 6 bit long binaries to 8 bit long ones.
         /// </summary>
-        /// <param name="inputDec">Decimal value.</param>
-        /// <returns>ASCII value.</returns>
-        private static string DecToASCII(List<string> inputDec)
+        /// <param name="bit6Numbers">String array of 6 bit long binaries.</param>
+        /// <returns>String array of 8 bits</returns>
+        private static string[] Bit6ToBit8(string[] bit6Numbers)
+        {
+            var combinedBinaries = String.Join("", bit6Numbers.ToArray());
+            List<string> output8bits = new List<string>();
+            var bit8Number = "";
+
+            for (int i = 1; i < combinedBinaries.Length + 1; i++)
+            {
+                bit8Number += combinedBinaries[i - 1];
+                if (i % 8 == 0)
+                {
+                    output8bits.Add(bit8Number);
+                    bit8Number = "";
+                }
+            }
+
+            return output8bits.ToArray();
+        }
+
+        /// <summary>
+        /// Converts decimal values ( <= 255) to 6 bit long binaries.
+        /// </summary>
+        /// <param name="input">input string (with spaces between values).</param>
+        /// <returns>String array of 6 bits.</returns>
+        private static string[] DecToBit6(string input)
+        {
+            var decNumbers = input.Split(' ');
+            decNumbers = decNumbers.Reverse().Skip(1).Reverse().ToArray();  // getting rid of last index whitch is empty
+            var outputList = new List<string>();
+
+            foreach (var decNumber in decNumbers)
+            {
+                outputList.Add(SingleItemToBinary(decNumber).Remove(0,2));  // here a bin number must have 6 digits - so we remove 2 first
+            }
+
+            return outputList.ToArray();
+        }
+
+        /// <summary>
+        /// Converts base64 value to decimal value.
+        /// </summary>
+        /// <param name="inputBase64">base64 value.</param>
+        /// <returns>decimal value.</returns>
+        private static string Base64ToDec(List<char> inputBase64)
         {
             bool run = true;
-            string outputBase64 = "";
+            string outputDec = "";
             int counter = 0;
-            while (run)
+            
+            for (int i = 0; i < inputBase64.Count; i++)
             {
-                var decNumber = int.Parse(inputDec[counter]);
-                outputBase64 += _asciiAlphabet[decNumber];
-                if (counter == inputDec.Count - 1)
+                var base64Number = inputBase64[i];
+
+                for (int j = 0; j < _alphabet.Count; j++)
                 {
-                    run = false;
+                    if (base64Number.ToString() == _alphabet[j])
+                    {
+                        outputDec += j.ToString() + " ";
+                    }
                 }
-                counter++;
             }
-            return outputBase64;
+
+            return outputDec;
         }
+
+        ///// <summary>
+        ///// Converts input string into ASCII form
+        ///// </summary>
+        ///// <param name="input">Input string.</param>
+        ///// <returns>ASCII value.</returns>
+        //public static string ConvertToASCII(string input)
+        //{
+        //    var inputDec = DecConvert(input.ToString());
+        //    var inputBin = inputDec.Select(c => { c = ConvertToBinary(c); return c; }).ToList();  // list of characters in binary form
+        //    inputDec = inputBin.Select(c => { c = BinaryToDec(c); return c; }).ToList();  // converting each sample to its Decimal values
+        //    string output = DecToASCII(inputDec);  // converting decimal values to ASCII
+
+        //    return output;
+        //}
+
+        ///// <summary>
+        ///// Converts decimal value into ASCII.
+        ///// </summary>
+        ///// <param name="inputDec">Decimal value.</param>
+        ///// <returns>ASCII value.</returns>
+        //private static string DecToASCII(List<string> inputDec)
+        //{
+        //    bool run = true;
+        //    string outputBase64 = "";
+        //    int counter = 0;
+        //    while (run)
+        //    {
+        //        var decNumber = int.Parse(inputDec[counter]);
+        //        outputBase64 += _asciiAlphabet[decNumber];
+        //        if (counter == inputDec.Count - 1)
+        //        {
+        //            run = false;
+        //        }
+        //        counter++;
+        //    }
+        //    return outputBase64;
+        //}
 
         /// <summary>
         /// Converts input string into binary form.
@@ -242,6 +342,7 @@ namespace NumbersConverter
         /// <returns>Converted item.</returns>
         private static string SingleItemToBinary(string input)
         {
+            //if (input == "") { return ""; }
             string output;
             var binNum = new List<int>();
             var tmp = int.Parse(input);
@@ -335,7 +436,7 @@ namespace NumbersConverter
             string combinedBinaries = String.Join("", inputBin.ToArray());  // string with all binar values
             combinedBinaries = AddZerosIfNecessary(combinedBinaries);
             List<string> bit6 = SplitTo6Bit(combinedBinaries);  // spliting combied binaries to 6 bit long samples
-            inputDec = bit6.Select(c => { c = BinaryToDec(c); return c; }).ToList();  // converting each sample to its Decimal values
+            inputDec = bit6.Select(c => { c = SingleBinaryToDec(c); return c; }).ToList();  // converting each sample to its Decimal values
             string output = DecToBase64(inputDec);  // converting decimal values to base64
 
             while (output.Length % 4 != 0)  // output must be divisible by 4
@@ -388,7 +489,7 @@ namespace NumbersConverter
         /// </summary>
         /// <param name="input">Binary string.</param>
         /// <returns>Decimal string.</returns>
-        private static string BinaryToDec(string input)
+        private static string SingleBinaryToDec(string input)
         {
             char[] array = input.ToCharArray();
             Array.Reverse(array);
