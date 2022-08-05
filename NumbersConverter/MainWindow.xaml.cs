@@ -43,7 +43,7 @@ namespace NumbersConverter
 
             if (e.Key == Key.Return && TextBoxOutput.IsKeyboardFocused)
             {
-                string output = Converter.ConvertToASCII(TextBoxInput.Text, ComboBoxType.Text);
+                string output = Converter.ConvertToASCII(TextBoxOutput.Text, ComboBoxType.Text);
                 TextBoxInput.Text = output;
             }
         }

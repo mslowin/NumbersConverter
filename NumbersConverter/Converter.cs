@@ -66,17 +66,57 @@ namespace NumbersConverter
             return output;
         }
 
-        private static string ConvertFromBase64(string v)
+        /// <summary>
+        /// Converts binary values to decimals
+        /// </summary>
+        /// <param name="input">Binary values to be converted (string with one or 
+        /// more binary numbers with spaces between them)</param>
+        /// <returns>Decimal representation of those values</returns>
+        private static string ConvertFromBinary(string input)
+        {
+            if (!IsBinary(input)) { return "Number isn't binary"; }
+            var binNumbers = input.Split(' ');
+            double output;
+            var outputList = new List<string>();
+
+            foreach (var binNumber in binNumbers)
+            {
+                output = 0;
+                char[] tmpArray = binNumber.ToCharArray();
+                Array.Reverse(tmpArray);
+                input = new string(tmpArray);
+
+                for (int i = 0, power = 1; i < input.Length; i++, power *= 2)
+                {
+                    output += int.Parse(input[i].ToString()) * power;
+                }
+
+                outputList.Add(output.ToString());
+            }
+
+            return String.Join(" ", outputList.ToArray());
+        }
+
+        /// <summary>
+        /// Checks if a number is binary.
+        /// </summary>
+        /// <param name="input">Number to be checked.</param>
+        /// <returns>true if is binary, otherwise false.</returns>
+        private static bool IsBinary(string input)
+        {
+            foreach (var character in input)
+            {
+                if (character.ToString() != "0" && character.ToString() != "1" && character.ToString() != " ") { return false; }
+            }
+            return true;
+        }
+
+        private static string ConvertFromHexadecimal(string input)
         {
             throw new NotImplementedException();
         }
 
-        private static string ConvertFromHexadecimal(string v)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static string ConvertFromBinary(string v)
+        private static string ConvertFromBase64(string input)
         {
             throw new NotImplementedException();
         }
