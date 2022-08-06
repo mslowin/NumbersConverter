@@ -9,7 +9,7 @@ Decoding tutorial: choose input data type (bottom combo box) and output data typ
 # Examples of use:
 <h3> ENCODING </h3>
 
-1. Encoding single decimal to binary:
+1. Encoding single decimal to binary: </br>
 ![Dec_to_bin](https://user-images.githubusercontent.com/62020662/183247116-430c4417-b05c-413d-8665-9a303bc03459.png)
 
 2. Encoding ASCII string to binary:
