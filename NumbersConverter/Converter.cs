@@ -181,12 +181,17 @@ namespace NumbersConverter
             string decNumbers = Base64ToDec(input.ToList());  // Converting base64 values to decimal values
             string[] bit6Numbers = DecToBit6(decNumbers);  // Converting decimal values to 6 bit long binary values
             string[] bit8Numbers = Bit6ToBit8(bit6Numbers);  // Putting 6bits together and creating 8bits out of them
-            string DecNumbers = ConvertFromBinary(String.Join(" ", bit8Numbers.ToArray()));  // Converting 8bits numbers to decimal values
-            string outputASCII = DecToASCII(DecNumbers);  // Converting decimals to ASCII
+            string outputDecNumbers = ConvertFromBinary(String.Join(" ", bit8Numbers.ToArray()));  // Converting 8bits numbers to decimal values
+            string outputASCII = DecToASCII(outputDecNumbers);  // Converting decimals to ASCII
 
             return outputASCII;
         }
 
+        /// <summary>
+        /// Checks if the value is of base64 type.
+        /// </summary>
+        /// <param name="input">Base64 value to be checked</param>
+        /// <returns>True if the value is of base64 type , false otherwise.</returns>
         private static bool IsBase64(string input)
         {
             foreach (var character in input)
