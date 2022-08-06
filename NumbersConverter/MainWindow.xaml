@@ -15,11 +15,13 @@
         </StackPanel>
         <TextBox x:Name="TextBoxOutput" HorizontalAlignment="Left" Margin="186,131,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="258" Height="24" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" TextChanged="TextBoxOutput_TextChanged" />
         <ComboBox x:Name="ComboBoxType" HorizontalAlignment="Left" Margin="19,131,0,0" Background="White" VerticalAlignment="Top" Width="143" Height="24" SelectedIndex="0" HorizontalContentAlignment="Center">
-            <!--<ComboBoxItem Content="ASCII"/>-->
             <ComboBoxItem Content="Binary"/>
             <ComboBoxItem Content="Hexadecimal"/>
             <ComboBoxItem Content="Base64"/>
         </ComboBox>
-        <Label Content="ASCII:" Background="White" HorizontalAlignment="Left" Margin="19,52,0,0" Width="143" Height="24" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+        <ComboBox x:Name="ComboBoxTypeDecASCII" HorizontalAlignment="Left" Margin="19,53,0,0" Background="White" VerticalAlignment="Top" Width="143" Height="24" SelectedIndex="0" HorizontalContentAlignment="Center" >
+            <ComboBoxItem Content="ASCII"/>
+            <ComboBoxItem Content="Decimal"/>
+        </ComboBox>
     </Grid>
 </Window>

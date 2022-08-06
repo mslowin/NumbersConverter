@@ -36,14 +36,16 @@ namespace NumbersConverter
         private void HandleEnter(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return && TextBoxInput.IsKeyboardFocused)
+            //if (e.Key == Key.Return && TextBoxOutput.Text == "")
             {
                 string output = Converter.ConvertFromASCII(TextBoxInput.Text, ComboBoxType.Text);
                 TextBoxOutput.Text = output;
             }
 
             if (e.Key == Key.Return && TextBoxOutput.IsKeyboardFocused)
+            //if (e.Key == Key.Return && TextBoxInput.Text == "")
             {
-                string output = Converter.ConvertToASCII(TextBoxOutput.Text, ComboBoxType.Text);
+                string output = Converter.ConvertToASCII(TextBoxOutput.Text, ComboBoxType.Text, ComboBoxTypeDecASCII.Text);
                 TextBoxInput.Text = output;
             }
         }

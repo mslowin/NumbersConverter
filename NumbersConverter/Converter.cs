@@ -47,33 +47,34 @@ namespace NumbersConverter
             return output;
         }
 
-        internal static string ConvertToASCII(string input, string desiredType)
+        internal static string ConvertToASCII(string input, string inputType, string desiredType)
         {
             var output = "";
-            switch (desiredType)
+            switch (inputType)
             {
                 case "Binary":
-                    output = ConvertFromBinary(input.ToString());
+                    output = ConvertFromBinary(input.ToString(), desiredType);
                     break;
 
                 case "Hexadecimal":
-                    output = ConvertFromHexadecimal(input.ToString());
+                    output = ConvertFromHexadecimal(input.ToString(), desiredType);
                     break;
 
                 case "Base64":
-                    output = ConvertFromBase64(input.ToString());
+                    output = ConvertFromBase64(input.ToString(), desiredType);
                     break;
             }
             return output;
         }
 
         /// <summary>
-        /// Converts binary values to decimals
+        /// Converts binary values to decimals or ASCII.
         /// </summary>
         /// <param name="input">Binary values to be converted (string with one or
-        /// more binary numbers with spaces between them)</param>
-        /// <returns>Decimal representation of those values</returns>
-        private static string ConvertFromBinary(string input)
+        /// more binary numbers with spaces between them).</param>
+        /// <param name="desiredType">Desired type (decimal or ASCII).</param>
+        /// <returns>Decimal or ASCII representation of those values.</returns>
+        private static string ConvertFromBinary(string input, string desiredType)
         {
             if (!IsBinary(input)) { return "Number isn't binary"; }
 
@@ -94,7 +95,8 @@ namespace NumbersConverter
                 }
                 outputList.Add(output.ToString());
             }
-            return String.Join(" ", outputList.ToArray());
+            if (desiredType == "ASCII") { return DecToASCII(String.Join(" ", outputList.ToArray())); }
+            else                        { return String.Join(" ", outputList.ToArray()); }
         }
 
         /// <summary>
@@ -112,12 +114,13 @@ namespace NumbersConverter
         }
 
         /// <summary>
-        /// Converts hexadecimal values to decimals
+        /// Converts hexadecimal values to decimals or ASCII.
         /// </summary>
         /// <param name="input">Hexadecimal values to be converted (string with one or
-        /// more hex numbers with spaces between them)</param>
-        /// <returns>Decimal representation of those values</returns>
-        private static string ConvertFromHexadecimal(string input)
+        /// more hex numbers with spaces between them).</param>
+        /// <param name="desiredType">Desired type (decimal or ASCII).</param>
+        /// <returns>Decimal or ASCII representation of those values.</returns>
+        private static string ConvertFromHexadecimal(string input, string desiredType)
         {
             if (!IsHexadecimal(input)) { return "Number isn't hexadecimal"; }
 
@@ -147,10 +150,8 @@ namespace NumbersConverter
                 }
                 outputList.Add(output.ToString());
             }
-
-            //string outputASCII = DecToASCII(String.Join(" ", outputList.ToArray()));
-
-            return String.Join(" ", outputList.ToArray());
+            if (desiredType == "ASCII") { return DecToASCII(String.Join(" ", outputList.ToArray())); }
+            else                        { return String.Join(" ", outputList.ToArray()); }
         }
 
         /// <summary>
@@ -171,20 +172,22 @@ namespace NumbersConverter
         }
 
         /// <summary>
-        /// Converts input string from base64 to ASCII.
+        /// Converts input string from base64 to ASCII or Dec.
         /// </summary>
         /// <param name="input">input string (e.g. QXR0YWNrIGF0IGRhd24h).</param>
-        /// <returns>ASCII representation of the base64 input.</returns>
-        private static string ConvertFromBase64(string input)
+        /// <param name="desiredType">Desired type (decimal or ASCII).</param>
+        /// <returns>ASCII or Dec representation of the base64 input.</returns>
+        private static string ConvertFromBase64(string input, string desiredType)
         {
             if (!IsBase64(input)) { return "Number isn't base64"; }
             string decNumbers = Base64ToDec(input.ToList());  // Converting base64 values to decimal values
             string[] bit6Numbers = DecToBit6(decNumbers);  // Converting decimal values to 6 bit long binary values
             string[] bit8Numbers = Bit6ToBit8(bit6Numbers);  // Putting 6bits together and creating 8bits out of them
-            string outputDecNumbers = ConvertFromBinary(String.Join(" ", bit8Numbers.ToArray()));  // Converting 8bits numbers to decimal values
+            string outputDecNumbers = ConvertFromBinary(String.Join(" ", bit8Numbers.ToArray()), "Decimal");  // Converting 8bits numbers to decimal values
             string outputASCII = DecToASCII(outputDecNumbers);  // Converting decimals to ASCII
 
-            return outputASCII;
+            if (desiredType == "ASCII") { return outputASCII; }
+            else                        { return outputDecNumbers; }
         }
 
         /// <summary>
@@ -278,9 +281,7 @@ namespace NumbersConverter
         /// <returns>decimal value.</returns>
         private static string Base64ToDec(List<char> inputBase64)
         {
-            bool run = true;
             string outputDec = "";
-            int counter = 0;
             
             for (int i = 0; i < inputBase64.Count; i++)
             {
@@ -298,44 +299,6 @@ namespace NumbersConverter
             return outputDec;
         }
 
-        ///// <summary>
-        ///// Converts input string into ASCII form
-        ///// </summary>
-        ///// <param name="input">Input string.</param>
-        ///// <returns>ASCII value.</returns>
-        //public static string ConvertToASCII(string input)
-        //{
-        //    var inputDec = DecConvert(input.ToString());
-        //    var inputBin = inputDec.Select(c => { c = ConvertToBinary(c); return c; }).ToList();  // list of characters in binary form
-        //    inputDec = inputBin.Select(c => { c = BinaryToDec(c); return c; }).ToList();  // converting each sample to its Decimal values
-        //    string output = DecToASCII(inputDec);  // converting decimal values to ASCII
-
-        //    return output;
-        //}
-
-        ///// <summary>
-        ///// Converts decimal value into ASCII.
-        ///// </summary>
-        ///// <param name="inputDec">Decimal value.</param>
-        ///// <returns>ASCII value.</returns>
-        //private static string DecToASCII(List<string> inputDec)
-        //{
-        //    bool run = true;
-        //    string outputBase64 = "";
-        //    int counter = 0;
-        //    while (run)
-        //    {
-        //        var decNumber = int.Parse(inputDec[counter]);
-        //        outputBase64 += _asciiAlphabet[decNumber];
-        //        if (counter == inputDec.Count - 1)
-        //        {
-        //            run = false;
-        //        }
-        //        counter++;
-        //    }
-        //    return outputBase64;
-        //}
-
         /// <summary>
         /// Converts input string into binary form.
         /// </summary>
@@ -343,7 +306,7 @@ namespace NumbersConverter
         /// <returns>Binary value.</returns>
         public static string ConvertToBinary(string input)
         {
-            if (!int.TryParse(input, out var inputInt))  // if input is a text string
+            if (!int.TryParse(input, out _))  // if input is a text string
             {
                 var outputList = new List<string>();
                 var inputInDecimals = DecConvert(input);
@@ -368,7 +331,6 @@ namespace NumbersConverter
         /// <returns>Converted item.</returns>
         private static string SingleItemToBinary(string input)
         {
-            //if (input == "") { return ""; }
             string output;
             var binNum = new List<int>();
             var tmp = int.Parse(input);
