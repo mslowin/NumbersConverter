@@ -177,6 +177,7 @@ namespace NumbersConverter
         /// <returns>ASCII representation of the base64 input.</returns>
         private static string ConvertFromBase64(string input)
         {
+            if (!IsBase64(input)) { return "Number isn't base64"; }
             string decNumbers = Base64ToDec(input.ToList());  // Converting base64 values to decimal values
             string[] bit6Numbers = DecToBit6(decNumbers);  // Converting decimal values to 6 bit long binary values
             string[] bit8Numbers = Bit6ToBit8(bit6Numbers);  // Putting 6bits together and creating 8bits out of them
@@ -184,6 +185,18 @@ namespace NumbersConverter
             string outputASCII = DecToASCII(DecNumbers);  // Converting decimals to ASCII
 
             return outputASCII;
+        }
+
+        private static bool IsBase64(string input)
+        {
+            foreach (var character in input)
+            {
+                if (!Regex.IsMatch(character.ToString(), @"[A-Za-z0-9+/= ]"))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         /// <summary>
@@ -199,6 +212,11 @@ namespace NumbersConverter
             for (int i = 0; i < decNumbers.Length; i++)
             {
                 var decNumber = decNumbers[i];
+
+                if (int.Parse(decNumber) < 32 || int.Parse(decNumber) > 126)  // if decimal is out of this range it cannot be converted to ASCII
+                {
+                    return "Can't convert to ASCII, try decimal.";
+                }
                 outputASCII += _asciiAlphabet[int.Parse(decNumber) - 32];  // 32 because my alphabet doesn't start from the beginning of ASCII
             }
 
