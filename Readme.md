@@ -1,0 +1,1 @@
+# Desktop application for decoding and encoding different types of data
